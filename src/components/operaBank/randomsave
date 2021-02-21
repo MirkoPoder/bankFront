@@ -1,113 +1,131 @@
 import React from "react";
-import { Formik, Form } from "formik";
-import MyTextInput from "../someComponents/MyTextInput";
 import MySelect from "../someComponents/MySelect";
+import {Input, Form} from 'reactstrap'
 import * as Yup from "yup";
+import { Component } from "react";
 
-function AddClient() {
-  return (
-    <Formik
-      initialValues={{
-        firstname: "",
-        lastname: "",
-        username: "",
-        email: "",
-        address: "",
-        country: "",
-      }}
-      validationSchema={Yup.object({
-        firstname: Yup.string()
-          .min(3, "Must be at least 3 characters")
-          .max(40, "Must be 40 characters or less")
-          .required("Required"),
-        lastname: Yup.string()
-          .min(3, "Must be atleast 3 characters")
-          .max(40, "Must be 40 characters or less")
-          .required("Required"),
-        username: Yup.string()
-          .min(3, "Must be at least 3 characters")
-          .max(40, "Must be 40 characters or less")
-          .required("Required"),
-        email: Yup.string().required("Required"),
-        address: Yup.string()
-          .min(3, "Must be at least 3 characters")
-          .max(100, "Must be 100 characters or less")
-          .required("Required"),
-        country: Yup.string()
-          .min(3, "Must be at least 3 characters")
-          .max(20, "Must be 40 characters or less")
-          .required("Required"),
-      })}
-      onSubmit={(values, { setSubmitting, resetForm }) => {
-        console.log(values);
-        setTimeout(
-          async () => {
-            resetForm();
-            setSubmitting(false);
-          },
-          3000
-          // (window.location.href = `/clients`)
-        );
-      }}
-    >
-      {(props) => (
-        <Form>
+class AddClient extends Component {
+  emptyItem = {
+    id: "32",
+    firstname: "",
+    lastname: "",
+    username: "",
+    email: "",
+    address: "",
+    country: "",
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoading: false,
+      clients: [],
+      item: this.emptyItem,
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChanges = this.handleChanges.bind(this);
+  }
+
+  async handleSubmit() {
+    const { item } = this.state;
+    await fetch(`/clients`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(item),
+    });
+    this.props.history.push("/clients");
+  }
+
+  handleChanges(event) {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+    let item = { ...this.state.item };
+    item[name] = value;
+    this.setState({ item });
+    console.log(this.state);
+  }
+
+  render() {
+    return (
+      <div>
+        <Form onSubmit={this.handleSubmit}>
           <div className="container">
             <div className="py-5 text-center">
               <h2>Add Client</h2>
             </div>
             <div className="col-md-12 order-md-1">
+              <div className="mb-3">
+                <Input
+                  label="Id"
+                  name="id"
+                  placeholder="Id"
+                  type="long"
+                  className="form-control"
+                  onChange={this.handleChanges}
+                />
+              </div>
               <div className="row">
                 <div className="col-md-6 mb-3">
-                  <MyTextInput
+                  <Input
                     label="First name"
                     name="firstname"
                     type="text"
                     className="form-control"
+                    onChange={this.handleChanges}
                   />
                 </div>
                 <div className="col-md-6 mb-3">
-                  <MyTextInput
+                  <Input
                     label="Last name"
                     name="lastname"
                     type="text"
                     className="form-control"
+                    onChange={this.handleChanges}
                   />
                 </div>
               </div>
               <div className="mb-3">
-                <MyTextInput
+                <Input
                   label="Username"
                   name="username"
                   placeholder="Username"
                   type="text"
                   className="form-control"
+                  onChange={this.handleChanges}
                 />
               </div>
               <div className="mb-3">
-                <MyTextInput
+                <Input
                   label="E-mail"
                   name="email"
                   placeholder="you@example.com"
                   type="email"
                   className="form-control"
+                  onChange={this.handleChanges}
                 />
               </div>
               <div className="mb-3">
-                <MyTextInput
+                <Input
                   label="Address"
                   name="address"
                   placeholder="1234 Main St"
                   type="text"
                   className="form-control"
+                  onChange={this.handleChanges}
                 />
               </div>
               <div className="mb-3">
                 <label>Country</label>
-                <MySelect
+                <select
                   label="Country"
                   name="country"
                   className="custom-select d-block w-100"
+                  onChange={this.handleChanges}
                 >
                   <option value="">Choose...</option>
                   <option value="estonia">Estonia</option>
@@ -115,7 +133,7 @@ function AddClient() {
                   <option value="lithuania">Lithuania</option>
                   <option value="finland">Finland</option>
                   <option value="sweden">Sweden</option>
-                </MySelect>
+                </select>
               </div>
               <hr className="mb4" />
               <div>
@@ -123,15 +141,16 @@ function AddClient() {
                   type="submit"
                   className="btn btn-primary btn-lg btn-block"
                 >
-                  {props.isSubmitting ? "adding..." : "Add client"}
+Save
                 </button>
               </div>
             </div>
           </div>
         </Form>
-      )}
-    </Formik>
-  );
+        )
+      </div>
+    );
+  }
 }
 
 export default AddClient;

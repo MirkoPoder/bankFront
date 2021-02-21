@@ -6,7 +6,7 @@ function NavBar() {
       <nav className="navbar navbar-expand-md navbar-dark bg-dark">
         <div>
           <a href="https://srini.ee" className="navbar-brand font-weight-bold">
-            SRINI
+            Company
           </a>
         </div>
         <ul className="navbar-nav">

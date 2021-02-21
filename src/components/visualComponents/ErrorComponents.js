@@ -1,4 +1,4 @@
-import '../someComponents/ErrorComponents.css'
+import '../visualComponents/ErrorComponents.css'
 
 export function PageNotFound() {
   return (
