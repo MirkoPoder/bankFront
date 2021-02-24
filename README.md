@@ -1,3 +1,42 @@
+Welcome to operaBank frontend!
+
+Running the app's front-end:
+* 1) run npm install
+* 2) run npm start
+
+Functionality:
+* register user (saves username and salted-hashed password into database)
+* log in with only correct username + password (trying to log in with wrong details direct to custom error page)
+* create different bank accounts for each user
+* each user can see only his own bank accounts
+* deposit and withdraw money
+* transfer money between bank accounts
+* check full transaction history of chose account (by clicking on account number on accounts registry)
+* log out (also directs to log out page)
+
+Used dependencies:
+*  "@testing-library/react": "^11.1.0",
+*  "@testing-library/user-event": "^12.1.10",
+*  "formik": "^2.2.6",
+*  "react": "^17.0.1",
+*  "react-dom": "^17.0.1",
+*  "react-scripts": "4.0.1",
+*  "redux-form": "^8.3.7",
+*  "web-vitals": "^0.2.4",
+*  "yup": "^0.32.8"
+
+Fields are validated with: 
+* YUP
+
+Currently not working properly:
+* links on navbar are visible even while not logged in
+* while trying to move to different tabs while not logged in, site gives TypeError (basically you can not do anything without being properly logged in)
+* a lot of automated tests to be written
+* ...
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

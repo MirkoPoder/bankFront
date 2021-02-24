@@ -13,10 +13,10 @@ class AddClient extends Component {
           id: "",
           firstname: "",
           lastname: "",
-          username: "",
-          email: "",
-          address: "",
-          country: "",
+          accountNumber: "",
+          balance: "",
+          bank: "",
+          username: sessionStorage.getItem("username"),
         }}
         validationSchema={Yup.object({
           firstname: Yup.string()
@@ -27,40 +27,33 @@ class AddClient extends Component {
             .min(3, "Must be atleast 3 characters")
             .max(40, "Must be 40 characters or less")
             .required("Required"),
-          username: Yup.string()
+          accountNumber: Yup.string().required("Required"),
+          balance: Yup.number().required("Required"),
+          bank: Yup.string()
             .min(3, "Must be at least 3 characters")
-            .max(40, "Must be 40 characters or less")
-            .required("Required"),
-          email: Yup.string().required("Required"),
-          address: Yup.string()
-            .min(3, "Must be at least 3 characters")
-            .max(100, "Must be 100 characters or less")
-            .required("Required"),
-          country: Yup.string()
-            .min(3, "Must be at least 3 characters")
-            .max(20, "Must be 40 characters or less")
+            .max(20, "Must be 20 characters or less")
             .required("Required"),
         })}
         onSubmit={(values) => {
           setTimeout(async () => {
-            await fetch(`/clients`, {
+            await fetch(`/createAccount`, {
               method: "POST",
               headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
               },
+
               body: JSON.stringify({ ...values }),
             });
-
-            this.props.history.push("/clients");
-          }, 3000);
+            this.props.history.push("/accounts");
+          }, 2000);
         }}
       >
         {(props) => (
           <Form>
             <div className="container">
               <div className="py-5 text-center">
-                <h2>Add Client</h2>
+                <h2>Create Bank Account</h2>
               </div>
               <div className="col-md-12 order-md-1">
                 <div className="row">
@@ -68,6 +61,7 @@ class AddClient extends Component {
                     <MyTextInput
                       label="First name"
                       name="firstname"
+                      placeholder="Account owner's given name"
                       type="text"
                       className="form-control"
                     />
@@ -76,6 +70,7 @@ class AddClient extends Component {
                     <MyTextInput
                       label="Last name"
                       name="lastname"
+                      placeholder="Account owner's family name"
                       type="text"
                       className="form-control"
                     />
@@ -83,53 +78,42 @@ class AddClient extends Component {
                 </div>
                 <div className="mb-3">
                   <MyTextInput
-                    label="Username"
-                    name="username"
-                    placeholder="Username"
+                    label="Account number"
+                    name="accountNumber"
+                    placeholder="Desired account number"
                     type="text"
                     className="form-control"
                   />
                 </div>
                 <div className="mb-3">
                   <MyTextInput
-                    label="E-mail"
-                    name="email"
-                    placeholder="you@example.com"
-                    type="email"
+                    label="Balance"
+                    name="balance"
+                    placeholder="Balance on opening account"
+                    type="number"
                     className="form-control"
                   />
                 </div>
                 <div className="mb-3">
-                  <MyTextInput
-                    label="Address"
-                    name="address"
-                    placeholder="1234 Main St"
-                    type="text"
-                    className="form-control"
-                  />
-                </div>
-                <div className="mb-3">
-                  <label>Country</label>
                   <MySelect
-                    label="Country"
-                    name="country"
+                    label="Bank"
+                    name="bank"
                     className="custom-select d-block w-100"
                   >
                     <option value="">Choose...</option>
-                    <option value="estonia">Estonia</option>
-                    <option value="latvia">Latvia</option>
-                    <option value="lithuania">Lithuania</option>
-                    <option value="finland">Finland</option>
-                    <option value="sweden">Sweden</option>
+                    <option value="SEB">SEB</option>
+                    <option value="Swedbank">Swedbank</option>
+                    <option value="LHV">LHV</option>
+                    <option value="Luminor">Luminor</option>
                   </MySelect>
                 </div>
                 <hr className="mb4" />
                 <div>
                   <button
                     type="submit"
-                    className="btn btn-primary btn-lg btn-block"
+                    className="btn btn-primary btn-sm btn-block"
                   >
-                    {props.isSubmitting ? "adding..." : "Add client"}
+                    {props.isSubmitting ? "Creating..." : "Create"}
                   </button>
                 </div>
               </div>
